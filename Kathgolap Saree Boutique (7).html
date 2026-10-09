@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kathgolap | Pure Bengali Heritage Sarees</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        botanical: {
+                            50: '#f5f9f0',
+                            100: '#e7f0dc',
+                            200: '#cee0be',
+                            600: '#5a7d3f',
+                            800: '#42612d',
+                            900: '#334b22',
+                            950: '#223317'
+                        },
+                        gold: {
+                            300: '#faea96',
+                            400: '#f3d352',
+                            500: '#e2b632',
+                            600: '#c49821',
+                            700: '#987413'
+                        },
+                        ivory: {
+                            50: '#fdfbf7',
+                            100: '#f7f4eb',
+                            200: '#ebe3d3',
+                            300: '#dcd2bf',
+                            800: '#4a4235'
+                        },
+                        crimson: {
+                            700: '#8b1d24',
+                            800: '#6d1217'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- React & Babel CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.6/babel.min.js"></script>
+
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #1f2937;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .bg-pattern {
+            background-image: radial-gradient(#e2b632 0.75px, transparent 0.75px), radial-gradient(#e2b632 0.75px, #fdfbf7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-opacity: 0.15;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f4eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334b22;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e2b632;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(4deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // Default placeholder image for safe fallback
+        const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80";
+
+        // Initial Default Categories
+        const INITIAL_CATEGORIES = [
+            "Bengali Traditional Sarees",
+            "Jamdani Sarees",
+            "Tant Sarees",
+            "Kantha Stitch Sarees",
+            "Cotton Sarees",
+            "Silk Sarees",
+            "Festive and Wedding Sarees",
+            "Daily Wear Sarees",
+            "New Arrivals",
+            "Bestsellers"
+        ];
+
+        // Initial Product Seed
+        const INITIAL_PRODUCTS = [
+            {
+                id: "prod_1",
+                sku: "KATH-JAM-001",
+                name: "Royal Crimson Muslin Dhakai Jamdani Saree",
+                category: "Jamdani Sarees",
+                price: 7800,
+                salePrice: 6950,
+                fabric: "Pure Muslin Soft Silk Cotton",
+                length: "5.5 Meters with Unstitched Blouse Piece (0.8m)",
+                craft: "Handwoven Dhakai Jamdani Weave",
+                stock: 8,
+                isFeatured: true,
+                isNewArrival: true,
+                isBestseller: true,
+                rating: 4.9,
+                reviewsCount: 28,
+                description: "Exquisite hand-woven Dhakai Jamdani saree featuring golden motif weaves across a rich crimson body. Highly lightweight, ethereal, and steeped in authentic Bengali heritage.",
+                images: [
+                    "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80",
+                    "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80"
+                ]
+            },
+            {
+                id: "prod_2",
+                sku: "KATH-TNT-002",
+                name: "Pastel Mint & Gold Zari Bengal Tant Saree",
+                category: "Tant Sarees",
+                price: 2800,
+                salePrice: 2250,
+                fabric: "100% Breathable Fine Bengal Cotton",
+                length: "5.5 Meters",
+                craft: "Traditional Fulia Tant Handloom",
+                stock: 12,
+                isFeatured: true,
+                isNewArrival: false,
+                isBestseller: true,
+                rating: 4.8,
+                reviewsCount: 34,
+                description: "Classic Fulia handloom Tant saree in a soothing pastel mint hue. Woven with delicate golden zari borders designed for effortless grace and airy all-day comfort.",
+                images: [
+                    "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80",
+                    "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80"
+                ]
+            },
+            {
+                id: "prod_3",
+                sku: "KATH-KNT-003",
+                name: "Midnight Forest Heritage Kantha Stitch Silk Saree",
+                category: "Kantha Stitch Sarees",
+                price: 11500,
+                salePrice: 9800,
+                fabric: "Pure Murshidabad Silk",
+                length: "6.3 Meters with Running Blouse Piece",
+                craft: "Artisanal Hand Kantha Embroidery",
+                stock: 4,
+                isFeatured: true,
+                isNewArrival: true,
+                isBestseller: false,
+                rating: 5.0,
+                reviewsCount: 19,
+                description: "A true collector's piece featuring thousands of hand-embroidered Kantha stitch motifs depicting Bengali rural folklore on deep botanical green silk.",
+                images: [
+                    "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=1000&q=80"
+                ]
+            },
+            {
+                id: "prod_4",
+                sku: "KATH-GRD-004",
+                name: "Garad Silk Classic Red & Ivory Puja Saree",
+                category: "Bengali Traditional Sarees",
+                price: 9200,
+                salePrice: null,
+                fabric: "Pure Garad Silk",
+                length: "5.5 Meters with Blouse Piece",
+                craft: "Traditional Red Temple Border Silk",
+                stock: 6,
+                isFeatured: true,
+                isNewArrival: false,
+                isBestseller: true,
+                rating: 4.9,
+                reviewsCount: 42,
+                description: "The pristine hallmark of Bengali festival celebrations. Pure natural unbleached ivory Garad silk adorned with striking red temple borders and delicate paisley pallu.",
+                images: [
+                    "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80"
+                ]
+            },
+            {
+                id: "prod_5",
+                sku: "KATH-BAL-005",
+                name: "Bishnupur Swarnachari Silk Saree in Royal Plum",
+                category: "Silk Sarees",
+                price: 16500,
+                salePrice: 14900,
+                fabric: "Pure Bishnupuri Swarnachari Silk",
+                length: "6.3 Meters with Matching Blouse Piece",
+                craft: "Gold & Silver Thread Mythological Weave",
+                stock: 3,
+                isFeatured: false,
+                isNewArrival: true,
+                isBestseller: false,
+                rating: 5.0,
+                reviewsCount: 15,
+                description: "Heritage Swarnachari silk woven in Bishnupur featuring intricate Mahabharata storytelling motifs inlaid with gold standard zari threadwork.",
+                images: [
+                    "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80"
+                ]
+            },
+            {
+                id: "prod_6",
+                sku: "KATH-COT-006",
+                name: "Handloom Soft Mulmul Cotton Saree - Kathgolap White",
+                category: "Cotton Sarees",
+                price: 3200,
+                salePrice: 2750,
+                fabric: "100% Organic Soft Cotton Mulmul",
+                length: "5.5 Meters",
+                craft: "Shantiniketan Block Print Accent",
+                stock: 15,
+                isFeatured: false,
+                isNewArrival: false,
+                isBestseller: true,
+                rating: 4.7,
+                reviewsCount: 51,
+                description: "Light as breeze, inspired by the serene Kathgolap frangipani flower. Hand-printed floral motifs in muted earth tones on ultra-soft white mulmul cotton.",
+                images: [
+                    "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80"
+                ]
+            }
+        ];
+
+        const INITIAL_INSTAGRAM_POSTS = [
+            { id: 1, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80", caption: "Festive Collection • Dhakai Grace" },
+            { id: 2, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80", caption: "Handwoven stories from Fulia artisans." },
+            { id: 3, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80", caption: "Ethereal Kathgolap White & Crimson Garad." },
+            { id: 4, image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80", caption: "Kantha stitch detailing by Murshidabad weavers." }
+        ];
+
+        function App() {
+            // Persistent / Editable Site Settings
+            const [settings, setSettings] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_settings');
+                const defaults = {
+                    whatsappNumber: "+919876543210",
+                    storeTitle: "Kathgolap",
+                    tagline: "Grace in Every Thread • অভিজাত বাঙালি সাজ",
+                    announcementTag: "Authenticated Bengal Weaves",
+                    announcementText: "🌸 Grace in Every Thread • Express Delivery Across Bengal, India & Worldwide",
+                    heroHeadline: "Grace in Every Thread",
+                    heroSubhead: "Discover handcrafted Bengali Jamdani, Tant, Kantha Stitch & Pure Silk Sarees woven by master artisans.",
+                    heroCtaText: "Explore Saree Collections",
+                    logoUrl: "", 
+                    aboutHeadline: "Preserving the Soul of Bengali Handloom Textiles",
+                    aboutText: "Kathgolap was born out of deep reverence for Bengal's timeless handloom heritage. Our boutique brings together the finest weaver communities of Dhakai Jamdani, Shantiniketan Kantha, Fulia Tant, and Bishnupur Silks.",
+                    aboutQuote: "A saree is not merely six yards of fabric; it is a canvas of poetry, culture, and Bengali pride.",
+                    whatsappBannerTitle: "Order Your Favorite Saree via WhatsApp Concierge",
+                    whatsappBannerSub: "Skip complex registration forms. Browse our catalog, click 'Order on WhatsApp', and interact directly with our team to confirm stock and delivery.",
+                    shippingNotice: "Shipping charges calculated based on pin code & location upon WhatsApp order confirmation.",
+                    instagramHandle: "kathgolap.sarees",
+                    instagramTitle: "Kathgolap on Instagram",
+                    contactAddress: "Kolkata, West Bengal, India",
+                    contactPhone: "+91 98765 43210",
+                    contactEmail: "care@kathgolap.co",
+                    footerBio: "Authentic Bengali handloom sarees curated directly from master weavers across Bengal.",
+                    adminUserId: "Kathgolap.co",
+                    adminPassword: "kathgolap2026"
+                };
+                return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+            });
+
+            // Product & Category Persistent State
+            const [products, setProducts] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_products');
+                return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+            });
+
+            const [categories, setCategories] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_categories');
+                return saved ? JSON.parse(saved) : INITIAL_CATEGORIES;
+            });
+
+            const [cart, setCart] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_cart');
+                return saved ? JSON.parse(saved) : [];
+            });
+
+            const [wishlist, setWishlist] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_wishlist');
+                return saved ? JSON.parse(saved) : [];
+            });
+
+            const [inquiries, setInquiries] = useState(() => {
+                const saved = localStorage.getItem('kathgolap_inquiries');
+                return saved ? JSON.parse(saved) : [
+                    { id: "inq_1", date: "2026-10-08", customerName: "Srabanti Mukherjee", phone: "+919830112233", items: "1x Muslin Dhakai Jamdani Saree", amount: 6950, status: "Delivered", notes: "Requested gift wrapping" },
+                    { id: "inq_2", date: "2026-10-09", customerName: "Ananya Roy", phone: "+919874554433", items: "1x Kantha Stitch Silk Saree", amount: 9800, status: "Confirmed", notes: "WhatsApp order sent" }
+                ];
+            });
+
+            // Tracking Logo / Image error states
+            const [logoError, setLogoError] = useState(false);
+            const [toastMessage, setToastMessage] = useState('');
+
+            // UI Navigation State
+            const [activeTab, setActiveTab] = useState('home'); // 'home', 'shop', 'about', 'contact'
+            const [selectedCategory, setSelectedCategory] = useState('All');
+            const [searchQuery, setSearchQuery] = useState('');
+            const [selectedProductModal, setSelectedProductModal] = useState(null);
+            const [isCartOpen, setIsCartOpen] = useState(false);
+
+            // Admin Authentication & Modal State
+            const [isAdminOpen, setIsAdminOpen] = useState(false);
+            const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+            const [adminLoginInput, setAdminLoginInput] = useState({ userId: '', password: '' });
+            const [adminError, setAdminError] = useState('');
+            const [adminActiveSection, setAdminActiveSection] = useState('textEditor'); // 'textEditor', 'products', 'categories', 'settings', 'inquiries'
+
+            // Admin Editing States
+            const [editingProduct, setEditingProduct] = useState(null);
+
+            useEffect(() => {
+                setLogoError(false);
+            }, [settings.logoUrl]);
+
+            // Save state updates to LocalStorage
+            useEffect(() => { localStorage.setItem('kathgolap_settings', JSON.stringify(settings)); }, [settings]);
+            useEffect(() => { localStorage.setItem('kathgolap_products', JSON.stringify(products)); }, [products]);
+            useEffect(() => { localStorage.setItem('kathgolap_categories', JSON.stringify(categories)); }, [categories]);
+            useEffect(() => { localStorage.setItem('kathgolap_cart', JSON.stringify(cart)); }, [cart]);
+            useEffect(() => { localStorage.setItem('kathgolap_wishlist', JSON.stringify(wishlist)); }, [wishlist]);
+            useEffect(() => { localStorage.setItem('kathgolap_inquiries', JSON.stringify(inquiries)); }, [inquiries]);
+
+            // Helper to trigger custom non-blocking toasts
+            const showToast = (msg) => {
+                setToastMessage(msg);
+                setTimeout(() => setToastMessage(''), 3500);
+            };
+
+            // Direct File Upload for Brand Logo
+            const handleLogoFileUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        showToast("Logo file must be under 5MB");
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setSettings(prev => ({ ...prev, logoUrl: event.target.result }));
+                        setLogoError(false);
+                        showToast("Brand logo updated successfully!");
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            // Direct File Upload for Saree Product Photos
+            const handleProductImageUpload = (e) => {
+                const files = Array.from(e.target.files);
+                if (files.length === 0) return;
+
+                files.forEach(file => {
+                    if (file.size > 5 * 1024 * 1024) {
+                        showToast("Photo must be under 5MB");
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setEditingProduct(prev => {
+                            if (!prev) return null;
+                            const existingImages = (prev.images || []).filter(img => img.trim() !== "");
+                            return { ...prev, images: [...existingImages, event.target.result] };
+                        });
+                        showToast("Saree photo added!");
+                    };
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            const addToCart = (product, quantity = 1) => {
+                setCart(prevCart => {
+                    const existingIndex = prevCart.findIndex(item => item.product.id === product.id);
+                    if (existingIndex > -1) {
+                        const updated = [...prevCart];
+                        updated[existingIndex].quantity += quantity;
+                        return updated;
+                    } else {
+                        return [...prevCart, { product, quantity }];
+                    }
+                });
+                showToast(`Added "${product.name}" to cart!`);
+            };
+
+            const updateCartQuantity = (productId, delta) => {
+                setCart(prevCart => {
+                    return prevCart.map(item => {
+                        if (item.product.id === productId) {
+                            const newQty = item.quantity + delta;
+                            return newQty > 0 ? { ...item, quantity: newQty } : null;
+                        }
+                        return item;
+                    }).filter(Boolean);
+                });
+            };
+
+            const removeFromCart = (productId) => {
+                setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
+                showToast("Item removed from cart");
+            };
+
+            const toggleWishlist = (product) => {
+                setWishlist(prev => {
+                    const exists = prev.some(item => item.id === product.id);
+                    if (exists) {
+                        showToast("Removed from Wishlist");
+                        return prev.filter(item => item.id !== product.id);
+                    } else {
+                        showToast("Saved to Wishlist!");
+                        return [...prev, product];
+                    }
+                });
+            };
+
+            const cartSubtotal = useMemo(() => {
+                return cart.reduce((total, item) => {
+                    const price = item.product.salePrice || item.product.price;
+                    return total + (price * item.quantity);
+                }, 0);
+            }, [cart]);
+
+            // Generates prefilled WhatsApp checkout URL for Cart
+            const generateWhatsAppCartUrl = () => {
+                if (cart.length === 0) return '#';
+                
+                let message = `Hello Kathgolap! I would like to place an order from your website.\n\n*ORDER ITEMS:*\n`;
+                
+                cart.forEach((item, index) => {
+                    const effectivePrice = item.product.salePrice || item.product.price;
+                    message += `${index + 1}. *${item.product.name}*\n   - Code/SKU: ${item.product.sku}\n   - Qty: ${item.quantity}\n   - Price: ₹${effectivePrice.toLocaleString('en-IN')}\n`;
+                });
+
+                message += `\n*Subtotal:* ₹${cartSubtotal.toLocaleString('en-IN')}`;
+                message += `\n*Delivery Note:* Standard express shipping charges apply based on delivery location.`;
+                message += `\n\nPlease confirm product availability, shipping charges to my address, and payment options. Thank you!`;
+
+                const cleanNumber = settings.whatsappNumber.replace(/[^0-9]/g, '');
+                return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+            };
+
+            // Generates prefilled WhatsApp URL for Single Product
+            const generateSingleProductWhatsAppUrl = (product, quantity = 1) => {
+                const effectivePrice = product.salePrice || product.price;
+                const total = effectivePrice * quantity;
+                
+                let message = `Hello Kathgolap! I would like to inquire/order this saree directly:\n\n`;
+                message += `🌸 *Saree Name:* ${product.name}\n`;
+                message += `🏷️ *Product Code / SKU:* ${product.sku}\n`;
+                message += `🧵 *Fabric:* ${product.fabric}\n`;
+                message += `📦 *Quantity:* ${quantity}\n`;
+                message += `💰 *Price:* ₹${effectivePrice.toLocaleString('en-IN')}\n`;
+                if (quantity > 1) {
+                    message += `💳 *Total Amount:* ₹${total.toLocaleString('en-IN')}\n`;
+                }
+                message += `\nPlease confirm availability and delivery charges for my pincode. Thank you!`;
+
+                const cleanNumber = settings.whatsappNumber.replace(/[^0-9]/g, '');
+                return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+            };
+
+            const filteredProducts = useMemo(() => {
+                return products.filter(p => {
+                    const matchesCategory = selectedCategory === 'All' ? true :
+                        (selectedCategory === 'New Arrivals' ? p.isNewArrival :
+                         selectedCategory === 'Bestsellers' ? p.isBestseller :
+                         p.category === selectedCategory);
+                    
+                    const matchesSearch = searchQuery.trim() === '' ? true :
+                        (p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.fabric.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+
+                    return matchesCategory && matchesSearch;
+                });
+            }, [products, selectedCategory, searchQuery]);
+
+            // Admin Authentication
+            const handleAdminLogin = (e) => {
+                e.preventDefault();
+                if (adminLoginInput.userId.trim() === settings.adminUserId && adminLoginInput.password === settings.adminPassword) {
+                    setIsAdminAuthenticated(true);
+                    setAdminError('');
+                    showToast("Welcome to Kathgolap Admin Portal");
+                } else {
+                    setAdminError('Invalid Admin User ID or Password.');
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col justify-between bg-ivory-50 text-gray-800 selection:bg-gold-500 selection:text-white">
+                    {/* Top Announcement Bar - Dynamically Editable */}
+                    <div className="bg-botanical-900 text-ivory-100 py-2 px-4 text-xs md:text-sm text-center tracking-wide font-medium flex justify-between items-center border-b border-gold-600/30">
+                        <div className="hidden md:block w-1/4 text-left text-gold-400 truncate">
+                            <i className="fa-solid fa-gem mr-1.5"></i> {settings.announcementTag}
+                        </div>
+                        <div className="w-full md:w-1/2 flex items-center justify-center gap-2">
+                            <span>{settings.announcementText}</span>
+                        </div>
+                        <div className="hidden md:flex w-1/4 justify-end gap-3 text-gold-300">
+                            <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="hover:text-white transition">
+                                <i className="fa-brands fa-whatsapp mr-1 text-green-400"></i> WhatsApp Concierge
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Navigation Bar */}
+                    <header className="sticky top-0 z-40 bg-ivory-50/95 backdrop-blur-md border-b border-ivory-200 shadow-sm transition-all duration-300">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+                            
+                            {/* Brand Logo & Title with Fallback */}
+                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setActiveTab('home'); setSelectedCategory('All'); }}>
+                                {settings.logoUrl && !logoError ? (
+                                    <img 
+                                        src={settings.logoUrl} 
+                                        alt="Kathgolap Logo" 
+                                        className="h-12 w-auto object-contain rounded" 
+                                        onError={() => setLogoError(true)}
+                                    />
+                                ) : (
+                                    <div className="w-11 h-11 rounded-full bg-botanical-900 flex items-center justify-center text-gold-400 border-2 border-gold-500 shadow-inner">
+                                        <svg className="w-7 h-7 animate-float" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM12 8C14.76 8 17 10.24 17 13C17 15.76 14.76 18 12 18C9.24 18 7 15.76 7 13C7 10.24 9.24 8 12 8ZM12 22C10.9 22 10 21.1 10 20C10 18.9 10.9 18 12 18C13.1 18 14 18.9 14 20C14 21.1 13.1 22 12 22ZM2 12C2 10.9 2.9 10 4 10C5.1 10 6 10.9 6 12C6 13.1 5.1 14 4 14C2.9 14 2 13.1 2 12ZM22 12C22 13.1 21.1 14 20 14C18.9 14 18 13.1 18 12C18 10.9 18.9 10 20 10C21.1 10 22 10.9 22 12Z"/>
+                                        </svg>
+                                    </div>
+                                )}
+                                <div>
+                                    <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-botanical-900 leading-none">
+                                        {settings.storeTitle}
+                                    </h1>
+                                    <p className="font-cormorant text-xs md:text-sm text-gold-600 font-semibold tracking-widest uppercase mt-0.5">
+                                        Bengali Boutique Elegance
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Desktop Navigation Links */}
+                            <nav className="hidden lg:flex items-center space-x-8 font-medium text-sm text-gray-700 tracking-wide">
+                                <button 
+                                    onClick={() => { setActiveTab('home'); window.scrollTo({top:0, behavior:'smooth'}); }} 
+                                    className={`transition hover:text-botanical-900 pb-1 border-b-2 ${activeTab === 'home' ? 'border-gold-500 text-botanical-900 font-semibold' : 'border-transparent'}`}
+                                >
+                                    Home
+                                </button>
+                                <button 
+                                    onClick={() => { setActiveTab('shop'); setSelectedCategory('All'); }} 
+                                    className={`transition hover:text-botanical-900 pb-1 border-b-2 ${activeTab === 'shop' ? 'border-gold-500 text-botanical-900 font-semibold' : 'border-transparent'}`}
+                                >
+                                    Saree Collections
+                                </button>
+                                <button 
+                                    onClick={() => { setActiveTab('about'); }} 
+                                    className={`transition hover:text-botanical-900 pb-1 border-b-2 ${activeTab === 'about' ? 'border-gold-500 text-botanical-900 font-semibold' : 'border-transparent'}`}
+                                >
+                                    Our Heritage Story
+                                </button>
+                                <button 
+                                    onClick={() => { setActiveTab('contact'); }} 
+                                    className={`transition hover:text-botanical-900 pb-1 border-b-2 ${activeTab === 'contact' ? 'border-gold-500 text-botanical-900 font-semibold' : 'border-transparent'}`}
+                                >
+                                    Contact & Support
+                                </button>
+                            </nav>
+
+                            {/* Actions & Utilities */}
+                            <div className="flex items-center space-x-4 sm:space-x-5">
+                                
+                                {/* Search Bar Input */}
+                                <div className="relative hidden sm:block w-44 md:w-56">
+                                    <input
+                                        type="text"
+                                        placeholder="Search sarees..."
+                                        value={searchQuery}
+                                        onChange={(e) => {
+                                            setSearchQuery(e.target.value);
+                                            if (activeTab !== 'shop') setActiveTab('shop');
+                                        }}
+                                        className="w-full bg-ivory-100 text-xs pl-8 pr-3 py-2 rounded-full border border-ivory-300 focus:outline-none focus:border-gold-500 transition"
+                                    />
+                                    <i className="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                                </div>
+
+                                {/* Wishlist */}
+                                <button 
+                                    onClick={() => { setActiveTab('shop'); showToast(`Showing Wishlisted Sarees (${wishlist.length})`); }} 
+                                    className="relative text-gray-700 hover:text-botanical-900 transition p-1.5"
+                                    title="Wishlist"
+                                >
+                                    <i className="fa-regular fa-heart text-lg"></i>
+                                    {wishlist.length > 0 && (
+                                        <span className="absolute -top-1 -right-1 bg-crimson-700 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                            {wishlist.length}
+                                        </span>
+                                    )}
+                                </button>
+
+                                {/* Cart Drawer Trigger */}
+                                <button 
+                                    onClick={() => setIsCartOpen(true)} 
+                                    className="relative bg-botanical-900 hover:bg-botanical-800 text-ivory-50 px-3.5 py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm font-medium shadow-sm transition"
+                                >
+                                    <i className="fa-solid fa-bag-shopping text-gold-400"></i>
+                                    <span className="hidden sm:inline">Cart</span>
+                                    <span className="bg-gold-500 text-botanical-950 font-bold px-1.5 py-0.5 rounded-full text-[11px]">
+                                        {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                                    </span>
+                                </button>
+
+                                {/* Private Admin Switch */}
+                                <button 
+                                    onClick={() => setIsAdminOpen(true)}
+                                    className="text-xs text-gray-400 hover:text-botanical-900 p-1.5 rounded border border-transparent hover:border-ivory-300 transition"
+                                    title="Private Admin Login"
+                                >
+                                    <i className="fa-solid fa-lock text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Mobile Search Row */}
+                        <div className="sm:hidden px-4 pb-2.5 pt-1">
+                            <div className="relative w-full">
+                                <input
+                                    type="text"
+                                    placeholder="Search sarees by name, SKU, or craft..."
+                                    value={searchQuery}
+                                    onChange={(e) => {
+                                        setSearchQuery(e.target.value);
+                                        if (activeTab !== 'shop') setActiveTab('shop');
+                                    }}
+                                    className="w-full bg-ivory-100 text-xs pl-8 pr-3 py-2 rounded-full border border-ivory-300 focus:outline-none focus:border-gold-500"
+                                />
+                                <i className="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Dynamic Toast Notification */}
+                    {toastMessage && (
+                        <div className="fixed bottom-5 right-5 z-50 bg-botanical-950 text-ivory-100 border border-gold-500/50 shadow-2xl px-4 py-3 rounded-xl flex items-center gap-3 text-sm animate-bounce">
+                            <i className="fa-solid fa-circle-check text-gold-400 text-lg"></i>
+                            <span>{toastMessage}</span>
+                        </div>
+                    )}
+
+                    {}
+                    <main className="flex-grow">
+                        
+                        {/* 1. HOMEPAGE VIEW */}
+                        {activeTab === 'home' && (
+                            <div>
+                                {/* Hero Banner - Fully Editable Texts */}
+                                <section className="relative bg-botanical-950 text-ivory-50 overflow-hidden py-16 md:py-24 border-b border-gold-600/30">
+                                    <div className="absolute inset-0 opacity-20 pointer-events-none bg-pattern"></div>
+                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                                        
+                                        <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+                                            <div className="inline-flex items-center gap-2 bg-botanical-900/80 border border-gold-500/40 text-gold-300 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest">
+                                                <i className="fa-solid fa-flower text-gold-400"></i> Pure Bengali Heritage Weaves
+                                            </div>
+                                            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ivory-50 leading-tight">
+                                                {settings.heroHeadline}
+                                            </h2>
+                                            <p className="font-cormorant text-lg sm:text-xl text-ivory-200 max-w-2xl leading-relaxed">
+                                                {settings.heroSubhead}
+                                            </p>
+                                            
+                                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                                                <button 
+                                                    onClick={() => { setActiveTab('shop'); setSelectedCategory('All'); }}
+                                                    className="w-full sm:w-auto bg-gold-500 hover:bg-gold-600 text-botanical-950 font-bold px-8 py-3.5 rounded-full shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm"
+                                                >
+                                                    <span>{settings.heroCtaText}</span>
+                                                    <i className="fa-solid fa-arrow-right"></i>
+                                                </button>
+
+                                                <a 
+                                                    href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent("Hello Kathgolap! I would like to inquire about your saree collections.")}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="w-full sm:w-auto bg-transparent border-2 border-gold-400 hover:bg-gold-500/10 text-gold-300 font-semibold px-6 py-3.5 rounded-full transition flex items-center justify-center gap-2 text-sm"
+                                                >
+                                                    <i className="fa-brands fa-whatsapp text-lg text-green-400"></i>
+                                                    <span>WhatsApp Order Concierge</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div className="lg:col-span-5 flex justify-center">
+                                            <div className="relative w-full max-w-md">
+                                                <div className="absolute -inset-1 bg-gradient-to-r from-gold-500 to-botanical-600 rounded-2xl blur opacity-30"></div>
+                                                <div className="relative bg-botanical-900 border-2 border-gold-500/50 rounded-2xl p-3 shadow-2xl overflow-hidden">
+                                                    <img 
+                                                        src={products[0]?.images[0] || FALLBACK_IMAGE} 
+                                                        alt="Kathgolap Saree Showcase" 
+                                                        className="w-full h-80 sm:h-96 object-cover rounded-xl"
+                                                        onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                    />
+                                                    <div className="p-3 bg-botanical-950/90 rounded-lg mt-3 border border-gold-500/30 text-center">
+                                                        <span className="text-xs text-gold-400 font-cormorant font-semibold tracking-wider uppercase">Featured Weaver Creation</span>
+                                                        <p className="font-serif text-sm text-ivory-100 font-medium">{products[0]?.name || "Pure Handloom Saree"}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+
+                                {/* Key Brand Attributes */}
+                                <section className="bg-ivory-100 py-8 border-b border-ivory-200">
+                                    <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                                        <div className="p-3">
+                                            <i className="fa-solid fa-hands-holding-child text-gold-600 text-2xl mb-2"></i>
+                                            <h4 className="font-serif font-semibold text-sm text-botanical-900">Direct Master Artisans</h4>
+                                            <p className="text-xs text-gray-600">Handwoven in Bengal villages</p>
+                                        </div>
+                                        <div className="p-3">
+                                            <i className="fa-solid fa-award text-gold-600 text-2xl mb-2"></i>
+                                            <h4 className="font-serif font-semibold text-sm text-botanical-900">100% Authentic Fabric</h4>
+                                            <p className="text-xs text-gray-600">Certified pure silks & cottons</p>
+                                        </div>
+                                        <div className="p-3">
+                                            <i className="fa-brands fa-whatsapp text-gold-600 text-2xl mb-2"></i>
+                                            <h4 className="font-serif font-semibold text-sm text-botanical-900">Easy WhatsApp Checkout</h4>
+                                            <p className="text-xs text-gray-600">No payment hassle upfront</p>
+                                        </div>
+                                        <div className="p-3">
+                                            <i className="fa-solid fa-truck-fast text-gold-600 text-2xl mb-2"></i>
+                                            <h4 className="font-serif font-semibold text-sm text-botanical-900">Express Tracked Shipping</h4>
+                                            <p className="text-xs text-gray-600">All India & Worldwide delivery</p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {}
+                                {/* Category Collections Grid */}
+                                <section className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-2xl mx-auto mb-10">
+                                        <span className="text-gold-600 font-cormorant text-sm font-bold uppercase tracking-widest">Heritage Weaves</span>
+                                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-botanical-900 mt-1">Shop By Collections</h3>
+                                        <div className="w-16 h-0.5 bg-gold-500 mx-auto mt-2"></div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                                        {categories.slice(0, 10).map((cat, idx) => (
+                                            <div 
+                                                key={idx}
+                                                onClick={() => { setSelectedCategory(cat); setActiveTab('shop'); }}
+                                                className="group bg-white rounded-xl border border-ivory-200 p-4 text-center cursor-pointer hover:border-gold-500 hover:shadow-lg transition duration-300"
+                                            >
+                                                <div className="w-12 h-12 mx-auto rounded-full bg-ivory-100 flex items-center justify-center text-botanical-900 group-hover:bg-botanical-900 group-hover:text-gold-400 transition">
+                                                    <i className="fa-solid fa-spa text-lg"></i>
+                                                </div>
+                                                <h4 className="font-serif font-semibold text-xs sm:text-sm text-gray-800 mt-3 group-hover:text-botanical-900">
+                                                    {cat}
+                                                </h4>
+                                                <span className="text-[11px] text-gray-500 mt-1 block">
+                                                    {products.filter(p => p.category === cat).length || 'Curated'} Sarees
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                {/* Featured Sarees */}
+                                <section className="py-12 bg-ivory-100 border-y border-ivory-200">
+                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                        <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                                            <div>
+                                                <span className="text-gold-600 font-cormorant text-sm font-bold uppercase tracking-widest">Curated Masterpieces</span>
+                                                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-botanical-900">Featured Saree Arrivals</h3>
+                                            </div>
+                                            <button 
+                                                onClick={() => { setActiveTab('shop'); setSelectedCategory('All'); }}
+                                                className="text-xs font-bold text-botanical-900 hover:text-gold-600 flex items-center gap-1 transition"
+                                            >
+                                                View All Sarees <i className="fa-solid fa-chevron-right text-[10px]"></i>
+                                            </button>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                            {products.filter(p => p.isFeatured).slice(0, 4).map(product => (
+                                                <div key={product.id} className="bg-white rounded-xl overflow-hidden border border-ivory-200 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                                                    <div className="relative overflow-hidden cursor-pointer" onClick={() => setSelectedProductModal(product)}>
+                                                        <img 
+                                                            src={product.images[0] || FALLBACK_IMAGE} 
+                                                            alt={product.name} 
+                                                            className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                                                            onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                        />
+                                                        {product.salePrice && (
+                                                            <span className="absolute top-3 left-3 bg-crimson-700 text-white text-[10px] font-bold px-2 py-1 rounded shadow">
+                                                                SALE
+                                                            </span>
+                                                        )}
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); toggleWishlist(product); }}
+                                                            className="absolute top-3 right-3 bg-white/80 backdrop-blur hover:bg-white text-gray-700 hover:text-crimson-700 w-8 h-8 rounded-full flex items-center justify-center transition shadow-sm"
+                                                        >
+                                                            <i className={`${wishlist.some(w => w.id === product.id) ? 'fa-solid text-crimson-700' : 'fa-regular'} fa-heart`}></i>
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="p-4 flex-grow flex flex-col justify-between">
+                                                        <div>
+                                                            <span className="text-[11px] text-gold-600 font-semibold tracking-wider uppercase block">{product.category}</span>
+                                                            <h4 
+                                                                onClick={() => setSelectedProductModal(product)} 
+                                                                className="font-serif font-bold text-base text-gray-900 hover:text-botanical-900 cursor-pointer line-clamp-2 mt-1"
+                                                            >
+                                                                {product.name}
+                                                            </h4>
+                                                            <p className="text-xs text-gray-500 mt-1"><i className="fa-solid fa-feather text-gold-500 mr-1"></i>{product.fabric}</p>
+                                                        </div>
+
+                                                        <div className="mt-4 pt-3 border-t border-ivory-100">
+                                                            <div className="flex items-baseline gap-2 mb-3">
+                                                                <span className="font-serif font-bold text-lg text-botanical-900">
+                                                                    ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+                                                                </span>
+                                                                {product.salePrice && (
+                                                                    <span className="text-xs text-gray-400 line-through">
+                                                                        ₹{product.price.toLocaleString('en-IN')}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                <button 
+                                                                    onClick={() => addToCart(product)}
+                                                                    className="w-full bg-ivory-100 hover:bg-ivory-200 text-botanical-900 font-semibold text-xs py-2 rounded-lg transition flex items-center justify-center gap-1"
+                                                                >
+                                                                    <i className="fa-solid fa-cart-plus text-gold-600"></i> Cart
+                                                                </button>
+                                                                
+                                                                <a 
+                                                                    href={generateSingleProductWhatsAppUrl(product)}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold text-xs py-2 rounded-lg transition flex items-center justify-center gap-1 text-center"
+                                                                >
+                                                                    <i className="fa-brands fa-whatsapp text-sm"></i> Order
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {}
+                                {/* Dynamic About Brand Story Section */}
+                                <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="bg-botanical-900 text-ivory-50 rounded-2xl p-8 sm:p-12 relative overflow-hidden border-2 border-gold-500/40 shadow-2xl">
+                                        <div className="max-w-3xl space-y-4">
+                                            <span className="text-gold-400 font-cormorant text-sm uppercase tracking-widest font-bold">About Kathgolap</span>
+                                            <h3 className="font-serif text-3xl sm:text-4xl font-bold leading-snug">{settings.aboutHeadline}</h3>
+                                            <p className="font-cormorant text-lg text-ivory-200 leading-relaxed">
+                                                {settings.aboutText}
+                                            </p>
+                                            <div className="pt-2">
+                                                <button 
+                                                    onClick={() => setActiveTab('about')} 
+                                                    className="inline-flex items-center gap-2 text-gold-400 hover:text-white font-bold text-sm underline decoration-gold-500 underline-offset-4"
+                                                >
+                                                    <span>Read Our Artisanal Heritage Story</span>
+                                                    <i className="fa-solid fa-arrow-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* Dynamic WhatsApp Banner */}
+                                <section className="py-12 bg-green-900/10 border-y border-green-800/20">
+                                    <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
+                                        <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                                            <i className="fa-brands fa-whatsapp text-base"></i> Direct Personal Ordering
+                                        </div>
+                                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-botanical-950">
+                                            {settings.whatsappBannerTitle}
+                                        </h3>
+                                        <p className="text-sm text-gray-600 max-w-xl mx-auto">
+                                            {settings.whatsappBannerSub}
+                                        </p>
+                                        <a 
+                                            href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full text-sm shadow-md transition"
+                                        >
+                                            <i className="fa-brands fa-whatsapp text-lg"></i>
+                                            <span>Chat with Kathgolap on WhatsApp</span>
+                                        </a>
+                                    </div>
+                                </section>
+
+                                {/* Instagram Showcase */}
+                                <section className="py-14 max-w-7xl mx-auto px-4">
+                                    <div className="text-center mb-8">
+                                        <span className="text-gold-600 font-cormorant text-sm uppercase font-bold tracking-widest">Follow Our Journey</span>
+                                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-botanical-900">{settings.instagramTitle}</h3>
+                                        <a 
+                                            href={`https://instagram.com/${settings.instagramHandle}`} 
+                                            target="_blank" 
+                                            rel="noreferrer"
+                                            className="text-xs text-gold-600 hover:text-botanical-900 font-semibold mt-1 inline-block"
+                                        >
+                                            @{settings.instagramHandle}
+                                        </a>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {INITIAL_INSTAGRAM_POSTS.map(post => (
+                                            <a 
+                                                key={post.id} 
+                                                href={`https://instagram.com/${settings.instagramHandle}`} 
+                                                target="_blank" 
+                                                rel="noreferrer" 
+                                                className="group relative overflow-hidden rounded-xl border border-ivory-200 block"
+                                            >
+                                                <img 
+                                                    src={post.image} 
+                                                    alt={post.caption} 
+                                                    className="w-full h-56 object-cover group-hover:scale-110 transition duration-500"
+                                                    onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                />
+                                                <div className="absolute inset-0 bg-botanical-950/70 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center p-4 text-center text-white text-xs">
+                                                    <p>{post.caption}</p>
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+
+                        {}
+                        {/* 2. FULL SHOP / CATALOG VIEW */}
+                        {activeTab === 'shop' && (
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                                
+                                <div className="border-b border-ivory-200 pb-6 mb-8">
+                                    <h2 className="font-serif text-3xl font-bold text-botanical-900">Saree Collections</h2>
+                                    <p className="text-xs text-gray-500 mt-1">Authentic handloom Bengali sarees, Dhakai Jamdani, Tant & Silk weaves.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                                    
+                                    {/* Sidebar Filters */}
+                                    <div className="lg:col-span-3 space-y-6">
+                                        <div className="bg-white p-5 rounded-xl border border-ivory-200 space-y-4">
+                                            <h4 className="font-serif font-bold text-sm text-botanical-900 uppercase tracking-wider flex items-center justify-between">
+                                                <span>Categories</span>
+                                                <i className="fa-solid fa-filter text-xs text-gold-600"></i>
+                                            </h4>
+                                            
+                                            <div className="space-y-1.5 text-xs font-medium">
+                                                <button 
+                                                    onClick={() => setSelectedCategory('All')}
+                                                    className={`w-full text-left px-3 py-2 rounded-lg transition flex items-center justify-between ${selectedCategory === 'All' ? 'bg-botanical-900 text-white font-bold' : 'text-gray-700 hover:bg-ivory-100'}`}
+                                                >
+                                                    <span>All Collections</span>
+                                                    <span>({products.length})</span>
+                                                </button>
+
+                                                {categories.map((cat, i) => {
+                                                    const count = products.filter(p => cat === 'New Arrivals' ? p.isNewArrival : cat === 'Bestsellers' ? p.isBestseller : p.category === cat).length;
+                                                    return (
+                                                        <button 
+                                                            key={i}
+                                                            onClick={() => setSelectedCategory(cat)}
+                                                            className={`w-full text-left px-3 py-2 rounded-lg transition flex items-center justify-between ${selectedCategory === cat ? 'bg-botanical-900 text-white font-bold' : 'text-gray-700 hover:bg-ivory-100'}`}
+                                                        >
+                                                            <span>{cat}</span>
+                                                            <span className="text-[11px] opacity-75">({count})</span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+                                        {/* WhatsApp Help Box */}
+                                        <div className="bg-botanical-900 text-ivory-100 p-5 rounded-xl border border-gold-500/30 text-center space-y-3">
+                                            <i className="fa-brands fa-whatsapp text-3xl text-green-400"></i>
+                                            <h5 className="font-serif font-bold text-sm">Need Help Choosing?</h5>
+                                            <p className="text-xs text-ivory-200">Our drapery consultants are live on WhatsApp to send video clips & draping guidance.</p>
+                                            <a 
+                                                href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent("Hello Kathgolap! I need assistance choosing a saree from your catalog.")}`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="inline-block w-full bg-gold-500 hover:bg-gold-600 text-botanical-950 font-bold text-xs py-2 rounded-lg transition"
+                                            >
+                                                Chat with Stylist
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    {/* Product Grid Area */}
+                                    <div className="lg:col-span-9">
+                                        <div className="flex justify-between items-center mb-6">
+                                            <p className="text-xs text-gray-500">
+                                                Showing <span className="font-bold text-gray-800">{filteredProducts.length}</span> Sarees in <span className="text-gold-600 font-semibold">{selectedCategory}</span>
+                                            </p>
+                                        </div>
+
+                                        {filteredProducts.length === 0 ? (
+                                            <div className="bg-white p-12 text-center rounded-xl border border-ivory-200 space-y-3">
+                                                <i className="fa-solid fa-magnifying-glass text-3xl text-gray-300"></i>
+                                                <h4 className="font-serif font-bold text-lg text-gray-700">No Sarees Found</h4>
+                                                <p className="text-xs text-gray-500">Try adjusting your category filter or search query.</p>
+                                                <button 
+                                                    onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
+                                                    className="bg-botanical-900 text-white text-xs px-4 py-2 rounded-lg font-semibold"
+                                                >
+                                                    Reset Filters
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                {filteredProducts.map(product => (
+                                                    <div key={product.id} className="bg-white rounded-xl overflow-hidden border border-ivory-200 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                                                        <div className="relative overflow-hidden cursor-pointer" onClick={() => setSelectedProductModal(product)}>
+                                                            <img 
+                                                                src={product.images[0] || FALLBACK_IMAGE} 
+                                                                alt={product.name} 
+                                                                className="w-full h-80 object-cover group-hover:scale-105 transition duration-500"
+                                                                onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                            />
+                                                            {product.salePrice && (
+                                                                <span className="absolute top-3 left-3 bg-crimson-700 text-white text-[10px] font-bold px-2 py-1 rounded shadow">
+                                                                    SALE
+                                                                </span>
+                                                            )}
+                                                            <button 
+                                                                onClick={(e) => { e.stopPropagation(); toggleWishlist(product); }}
+                                                                className="absolute top-3 right-3 bg-white/80 backdrop-blur hover:bg-white text-gray-700 hover:text-crimson-700 w-8 h-8 rounded-full flex items-center justify-center transition shadow-sm"
+                                                            >
+                                                                <i className={`${wishlist.some(w => w.id === product.id) ? 'fa-solid text-crimson-700' : 'fa-regular'} fa-heart`}></i>
+                                                            </button>
+                                                        </div>
+
+                                                        <div className="p-4 flex-grow flex flex-col justify-between">
+                                                            <div>
+                                                                <div className="flex justify-between items-center text-[10px] text-gray-400 mb-1">
+                                                                    <span>SKU: {product.sku}</span>
+                                                                    <span className="text-gold-600 font-semibold uppercase">{product.category}</span>
+                                                                </div>
+                                                                <h4 
+                                                                    onClick={() => setSelectedProductModal(product)} 
+                                                                    className="font-serif font-bold text-base text-gray-900 hover:text-botanical-900 cursor-pointer line-clamp-2"
+                                                                >
+                                                                    {product.name}
+                                                                </h4>
+                                                                <p className="text-xs text-gray-500 mt-1 line-clamp-1"><i className="fa-solid fa-feather text-gold-500 mr-1"></i>{product.fabric}</p>
+                                                            </div>
+
+                                                            <div className="mt-4 pt-3 border-t border-ivory-100">
+                                                                <div className="flex items-baseline gap-2 mb-3">
+                                                                    <span className="font-serif font-bold text-lg text-botanical-900">
+                                                                        ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+                                                                    </span>
+                                                                    {product.salePrice && (
+                                                                        <span className="text-xs text-gray-400 line-through">
+                                                                            ₹{product.price.toLocaleString('en-IN')}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+
+                                                                <div className="grid grid-cols-2 gap-2">
+                                                                    <button 
+                                                                        onClick={() => addToCart(product)}
+                                                                        className="w-full bg-ivory-100 hover:bg-ivory-200 text-botanical-900 font-semibold text-xs py-2 rounded-lg transition flex items-center justify-center gap-1"
+                                                                    >
+                                                                        <i className="fa-solid fa-cart-plus text-gold-600"></i> Cart
+                                                                    </button>
+                                                                    
+                                                                    <a 
+                                                                        href={generateSingleProductWhatsAppUrl(product)}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold text-xs py-2 rounded-lg transition flex items-center justify-center gap-1 text-center"
+                                                                    >
+                                                                        <i className="fa-brands fa-whatsapp text-sm"></i> Order
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 3. HERITAGE STORY PAGE */}
+                        {activeTab === 'about' && (
+                            <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
+                                <div className="text-center space-y-3">
+                                    <span className="text-gold-600 font-cormorant text-sm uppercase font-bold tracking-widest">A Legacy of Bengal</span>
+                                    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-botanical-900">The Kathgolap Story</h2>
+                                    <div className="w-20 h-0.5 bg-gold-500 mx-auto"></div>
+                                </div>
+
+                                <div className="bg-white p-8 sm:p-10 rounded-2xl border border-ivory-200 space-y-6 text-gray-700 font-cormorant text-lg leading-relaxed shadow-sm">
+                                    <p>
+                                        Welcome to <strong className="text-botanical-900 font-serif">{settings.storeTitle}</strong> — named after the delicate white frangipani blossom that symbolizes grace, simplicity, and pure elegance across Bengal.
+                                    </p>
+                                    <p>
+                                        {settings.aboutText}
+                                    </p>
+                                    <div className="p-4 bg-ivory-100 rounded-xl border-l-4 border-gold-500 italic text-botanical-900 font-serif">
+                                        "{settings.aboutQuote}"
+                                    </div>
+                                    <p>
+                                        We invite you to browse our collections or reach out via our personalized WhatsApp concierge to experience authentic Bengali elegance delivered directly to your doorstep.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 4. CONTACT & POLICIES PAGE */}
+                        {activeTab === 'contact' && (
+                            <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
+                                <div className="text-center space-y-3">
+                                    <span className="text-gold-600 font-cormorant text-sm uppercase font-bold tracking-widest">We Are At Your Service</span>
+                                    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-botanical-900">Contact Kathgolap</h2>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="bg-white p-6 rounded-2xl border border-ivory-200 space-y-4">
+                                        <h4 className="font-serif font-bold text-lg text-botanical-900 flex items-center gap-2">
+                                            <i className="fa-brands fa-whatsapp text-green-600"></i> WhatsApp Concierge
+                                        </h4>
+                                        <p className="text-xs text-gray-600">Our primary channel for order inquiries, custom stitching requests, and video consultations.</p>
+                                        <a 
+                                            href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="inline-block bg-green-600 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow"
+                                        >
+                                            Message Us ({settings.whatsappNumber})
+                                        </a>
+                                    </div>
+
+                                    <div className="bg-white p-6 rounded-2xl border border-ivory-200 space-y-4">
+                                        <h4 className="font-serif font-bold text-lg text-botanical-900 flex items-center gap-2">
+                                            <i className="fa-solid fa-location-dot text-gold-600"></i> Heritage Boutique
+                                        </h4>
+                                        <p className="text-xs text-gray-600">{settings.contactAddress}</p>
+                                        <p className="text-xs text-gray-500">{settings.shippingNotice}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </main>
+
+                    {}
+                    {/* PRODUCT DETAIL MODAL */}
+                    {selectedProductModal && (
+                        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+                            <div className="bg-white rounded-2xl max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl border border-ivory-200 max-h-[90vh] overflow-y-auto">
+                                <button 
+                                    onClick={() => setSelectedProductModal(null)}
+                                    className="absolute top-4 right-4 bg-ivory-100 text-gray-700 hover:bg-botanical-900 hover:text-white w-9 h-9 rounded-full flex items-center justify-center transition"
+                                >
+                                    <i className="fa-solid fa-xmark text-base"></i>
+                                </button>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-3">
+                                        <img 
+                                            src={selectedProductModal.images[0] || FALLBACK_IMAGE} 
+                                            alt={selectedProductModal.name} 
+                                            className="w-full h-80 object-cover rounded-xl border border-ivory-200"
+                                            onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                        />
+                                        <div className="flex gap-2">
+                                            {selectedProductModal.images.map((img, idx) => (
+                                                <img 
+                                                    key={idx} 
+                                                    src={img || FALLBACK_IMAGE} 
+                                                    alt="Thumbnail" 
+                                                    className="w-16 h-16 object-cover rounded-lg border border-gold-500 cursor-pointer" 
+                                                    onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4 flex flex-col justify-between">
+                                        <div>
+                                            <span className="text-xs font-bold text-gold-600 uppercase tracking-wider">{selectedProductModal.category}</span>
+                                            <h3 className="font-serif text-xl sm:text-2xl font-bold text-botanical-900 mt-1">{selectedProductModal.name}</h3>
+                                            <p className="text-xs text-gray-400 mt-0.5">Product SKU: {selectedProductModal.sku}</p>
+
+                                            <div className="flex items-baseline gap-3 my-3">
+                                                <span className="font-serif text-2xl font-bold text-botanical-900">
+                                                    ₹{(selectedProductModal.salePrice || selectedProductModal.price).toLocaleString('en-IN')}
+                                                </span>
+                                                {selectedProductModal.salePrice && (
+                                                    <span className="text-sm text-gray-400 line-through">
+                                                        ₹{selectedProductModal.price.toLocaleString('en-IN')}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2 text-xs text-gray-700 bg-ivory-100 p-3 rounded-lg border border-ivory-200">
+                                                <p><strong>Fabric:</strong> {selectedProductModal.fabric}</p>
+                                                <p><strong>Craft:</strong> {selectedProductModal.craft}</p>
+                                                <p><strong>Length:</strong> {selectedProductModal.length}</p>
+                                                <p><strong>Stock Status:</strong> <span className="text-green-700 font-semibold">{selectedProductModal.stock > 0 ? `In Stock (${selectedProductModal.stock} remaining)` : 'Out of Stock'}</span></p>
+                                            </div>
+
+                                            <p className="text-xs text-gray-600 mt-3 leading-relaxed">
+                                                {selectedProductModal.description}
+                                            </p>
+                                        </div>
+
+                                        <div className="space-y-3 pt-3 border-t border-ivory-200">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <button 
+                                                    onClick={() => { addToCart(selectedProductModal); setSelectedProductModal(null); }}
+                                                    className="w-full bg-ivory-200 hover:bg-ivory-300 text-botanical-900 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2"
+                                                >
+                                                    <i className="fa-solid fa-cart-plus text-gold-600"></i> Add to Cart
+                                                </button>
+
+                                                <a 
+                                                    href={generateSingleProductWhatsAppUrl(selectedProductModal)}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 text-center"
+                                                >
+                                                    <i className="fa-brands fa-whatsapp text-lg"></i> Direct WhatsApp
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* CART DRAWER */}
+                    {isCartOpen && (
+                        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end">
+                            <div className="bg-white w-full max-w-md h-full flex flex-col justify-between shadow-2xl p-6 relative">
+                                <div>
+                                    <div className="flex items-center justify-between border-b border-ivory-200 pb-4">
+                                        <div className="flex items-center gap-2">
+                                            <i className="fa-solid fa-bag-shopping text-gold-600 text-xl"></i>
+                                            <h3 className="font-serif font-bold text-lg text-botanical-900">Your Shopping Cart</h3>
+                                        </div>
+                                        <button onClick={() => setIsCartOpen(false)} className="text-gray-400 hover:text-gray-800">
+                                            <i className="fa-solid fa-xmark text-lg"></i>
+                                        </button>
+                                    </div>
+
+                                    {cart.length === 0 ? (
+                                        <div className="text-center py-16 space-y-3">
+                                            <i className="fa-solid fa-basket-shopping text-4xl text-gray-300"></i>
+                                            <p className="font-serif text-gray-600">Your cart is currently empty.</p>
+                                            <button 
+                                                onClick={() => { setIsCartOpen(false); setActiveTab('shop'); }}
+                                                className="bg-botanical-900 text-white text-xs px-5 py-2.5 rounded-full font-bold"
+                                            >
+                                                Explore Saree Collections
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="divide-y divide-ivory-100 max-h-[60vh] overflow-y-auto my-4 pr-1">
+                                            {cart.map((item, i) => {
+                                                const price = item.product.salePrice || item.product.price;
+                                                return (
+                                                    <div key={i} className="py-3 flex items-center gap-3">
+                                                        <img 
+                                                            src={item.product.images[0] || FALLBACK_IMAGE} 
+                                                            alt={item.product.name} 
+                                                            className="w-16 h-16 object-cover rounded-lg border border-ivory-200" 
+                                                            onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                                                        />
+                                                        <div className="flex-grow">
+                                                            <h5 className="font-serif text-xs font-bold text-gray-900 line-clamp-1">{item.product.name}</h5>
+                                                            <span className="text-[10px] text-gray-400">SKU: {item.product.sku}</span>
+                                                            <div className="text-xs font-bold text-botanical-900 mt-1">₹{price.toLocaleString('en-IN')}</div>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 bg-ivory-100 px-2 py-1 rounded-lg">
+                                                            <button onClick={() => updateCartQuantity(item.product.id, -1)} className="text-xs px-1 text-gray-600 hover:text-black">-</button>
+                                                            <span className="text-xs font-bold">{item.quantity}</span>
+                                                            <button onClick={() => updateCartQuantity(item.product.id, 1)} className="text-xs px-1 text-gray-600 hover:text-black">+</button>
+                                                        </div>
+                                                        <button onClick={() => removeFromCart(item.product.id)} className="text-gray-400 hover:text-crimson-700 text-xs p-1">
+                                                            <i className="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {cart.length > 0 && (
+                                    <div className="border-t border-ivory-200 pt-4 space-y-4">
+                                        <div className="flex justify-between items-center font-serif">
+                                            <span className="text-gray-600 text-sm">Subtotal:</span>
+                                            <span className="font-bold text-xl text-botanical-900">₹{cartSubtotal.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        <p className="text-[11px] text-gray-500 text-center">
+                                            {settings.shippingNotice}
+                                        </p>
+                                        <a 
+                                            href={generateWhatsAppCartUrl()}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 text-sm text-center shadow-lg"
+                                        >
+                                            <i className="fa-brands fa-whatsapp text-xl"></i>
+                                            <span>Checkout on WhatsApp</span>
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {}
+                    {/* PRIVATE ADMIN DASHBOARD MODAL */}
+                    {isAdminOpen && (
+                        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+                            <div className="bg-white rounded-2xl max-w-4xl w-full p-6 sm:p-8 relative shadow-2xl border border-gold-500/50 max-h-[92vh] overflow-y-auto">
+                                <button 
+                                    onClick={() => setIsAdminOpen(false)}
+                                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-800"
+                                >
+                                    <i className="fa-solid fa-xmark text-xl"></i>
+                                </button>
+
+                                {!isAdminAuthenticated ? (
+                                    /* ADMIN LOGIN FORM */
+                                    <div className="max-w-md mx-auto py-8 space-y-6">
+                                        <div className="text-center space-y-2">
+                                            <div className="w-12 h-12 bg-botanical-900 text-gold-400 rounded-full flex items-center justify-center mx-auto text-xl border border-gold-500">
+                                                <i className="fa-solid fa-user-shield"></i>
+                                            </div>
+                                            <h3 className="font-serif text-2xl font-bold text-botanical-900">Kathgolap Admin Portal</h3>
+                                            <p className="text-xs text-gray-500">Private portal for brand owner management.</p>
+                                        </div>
+
+                                        {adminError && (
+                                            <div className="bg-red-50 text-red-700 p-3 rounded-lg text-xs font-semibold text-center border border-red-200">
+                                                {adminError}
+                                            </div>
+                                        )}
+
+                                        <form onSubmit={handleAdminLogin} className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Admin User ID</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={adminLoginInput.userId}
+                                                    onChange={e => setAdminLoginInput({ ...adminLoginInput, userId: e.target.value })}
+                                                    placeholder="Kathgolap.co"
+                                                    required
+                                                    className="w-full px-3 py-2 text-sm border border-ivory-300 rounded-lg focus:outline-none focus:border-gold-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Password</label>
+                                                <input 
+                                                    type="password" 
+                                                    value={adminLoginInput.password}
+                                                    onChange={e => setAdminLoginInput({ ...adminLoginInput, password: e.target.value })}
+                                                    placeholder="••••••••"
+                                                    required
+                                                    className="w-full px-3 py-2 text-sm border border-ivory-300 rounded-lg focus:outline-none focus:border-gold-500"
+                                                />
+                                            </div>
+                                            <button 
+                                                type="submit"
+                                                className="w-full bg-botanical-900 text-gold-400 font-bold py-2.5 rounded-lg text-sm hover:bg-botanical-800 transition"
+                                            >
+                                                Authenticate Admin Access
+                                            </button>
+                                        </form>
+                                        <p className="text-[11px] text-gray-400 text-center">Initial Login ID: Kathgolap.co | Pass: kathgolap2026</p>
+                                    </div>
+                                ) : (
+                                    /* AUTHENTICATED ADMIN DASHBOARD */
+                                    <div className="space-y-6">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-ivory-200 pb-4 gap-4">
+                                            <div>
+                                                <h3 className="font-serif text-2xl font-bold text-botanical-900">Admin Control Panel</h3>
+                                                <p className="text-xs text-gray-500">Full management control over products, website text, logo & WhatsApp orders.</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => setIsAdminAuthenticated(false)}
+                                                className="bg-red-50 text-red-700 hover:bg-red-100 text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                                            >
+                                                <i className="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                                            </button>
+                                        </div>
+
+                                        {/* Admin Tabs */}
+                                        <div className="flex flex-wrap border-b border-ivory-200 gap-4 text-xs font-bold">
+                                            <button 
+                                                onClick={() => setAdminActiveSection('textEditor')}
+                                                className={`pb-2 border-b-2 ${adminActiveSection === 'textEditor' ? 'border-gold-500 text-botanical-900' : 'border-transparent text-gray-400'}`}
+                                            >
+                                                ✍️ Edit All Site Texts
+                                            </button>
+                                            <button 
+                                                onClick={() => setAdminActiveSection('products')}
+                                                className={`pb-2 border-b-2 ${adminActiveSection === 'products' ? 'border-gold-500 text-botanical-900' : 'border-transparent text-gray-400'}`}
+                                            >
+                                                Saree Catalog ({products.length})
+                                            </button>
+                                            <button 
+                                                onClick={() => setAdminActiveSection('categories')}
+                                                className={`pb-2 border-b-2 ${adminActiveSection === 'categories' ? 'border-gold-500 text-botanical-900' : 'border-transparent text-gray-400'}`}
+                                            >
+                                                Categories ({categories.length})
+                                            </button>
+                                            <button 
+                                                onClick={() => setAdminActiveSection('settings')}
+                                                className={`pb-2 border-b-2 ${adminActiveSection === 'settings' ? 'border-gold-500 text-botanical-900' : 'border-transparent text-gray-400'}`}
+                                            >
+                                                Logo & Credentials
+                                            </button>
+                                            <button 
+                                                onClick={() => setAdminActiveSection('inquiries')}
+                                                className={`pb-2 border-b-2 ${adminActiveSection === 'inquiries' ? 'border-gold-500 text-botanical-900' : 'border-transparent text-gray-400'}`}
+                                            >
+                                                Order Inquiries ({inquiries.length})
+                                            </button>
+                                        </div>
+
+                                        {/* 1. FULL SITE CONTENT & TEXT EDITOR */}
+                                        {adminActiveSection === 'textEditor' && (
+                                            <div className="space-y-6 text-xs">
+                                                <div className="bg-gold-500/10 p-3 rounded-lg border border-gold-500/30 text-botanical-900">
+                                                    <p className="font-semibold"><i className="fa-solid fa-pen-to-square mr-1"></i> Full Section Text Control</p>
+                                                    <p className="text-[11px] text-gray-600 mt-0.5">Edit any heading, subtitle, banner message, address, or policy notice below. Changes apply instantly.</p>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                                    
+                                                    {/* Announcement & Header */}
+                                                    <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">Top Announcement Bar</h5>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Left Tagline Badge</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.announcementTag} 
+                                                                onChange={e => setSettings({...settings, announcementTag: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Center Announcement Message</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.announcementText} 
+                                                                onChange={e => setSettings({...settings, announcementText: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Hero Section */}
+                                                    <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">Homepage Hero Section</h5>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Main Headline</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.heroHeadline} 
+                                                                onChange={e => setSettings({...settings, heroHeadline: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Subheadline Description</label>
+                                                            <textarea 
+                                                                rows="2"
+                                                                value={settings.heroSubhead} 
+                                                                onChange={e => setSettings({...settings, heroSubhead: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            ></textarea>
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Button Label</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.heroCtaText} 
+                                                                onChange={e => setSettings({...settings, heroCtaText: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* About Brand Section */}
+                                                    <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">About Heritage Section</h5>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">About Headline</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.aboutHeadline} 
+                                                                onChange={e => setSettings({...settings, aboutHeadline: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Detailed Story Paragraph</label>
+                                                            <textarea 
+                                                                rows="3"
+                                                                value={settings.aboutText} 
+                                                                onChange={e => setSettings({...settings, aboutText: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            ></textarea>
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Highlighted Quote</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.aboutQuote} 
+                                                                onChange={e => setSettings({...settings, aboutQuote: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* WhatsApp & Shipping Notices */}
+                                                    <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">WhatsApp Banner & Shipping Notes</h5>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">WhatsApp Banner Title</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.whatsappBannerTitle} 
+                                                                onChange={e => setSettings({...settings, whatsappBannerTitle: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">WhatsApp Subtitle</label>
+                                                            <textarea 
+                                                                rows="2"
+                                                                value={settings.whatsappBannerSub} 
+                                                                onChange={e => setSettings({...settings, whatsappBannerSub: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            ></textarea>
+                                                        </div>
+                                                        <div>
+                                                            <label className="block font-bold mb-1">Shipping & Charges Notice (Cart & Policies)</label>
+                                                            <input 
+                                                                type="text" 
+                                                                value={settings.shippingNotice} 
+                                                                onChange={e => setSettings({...settings, shippingNotice: e.target.value})}
+                                                                className="w-full p-2 border rounded bg-white"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Contact & Footer */}
+                                                    <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3 md:col-span-2">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">Contact Details & Footer Bio</h5>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                            <div>
+                                                                <label className="block font-bold mb-1">Boutique Address</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    value={settings.contactAddress} 
+                                                                    onChange={e => setSettings({...settings, contactAddress: e.target.value})}
+                                                                    className="w-full p-2 border rounded bg-white"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block font-bold mb-1">WhatsApp / Phone</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    value={settings.whatsappNumber} 
+                                                                    onChange={e => setSettings({...settings, whatsappNumber: e.target.value})}
+                                                                    className="w-full p-2 border rounded bg-white"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block font-bold mb-1">Instagram Profile</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    value={settings.instagramHandle} 
+                                                                    onChange={e => setSettings({...settings, instagramHandle: e.target.value})}
+                                                                    className="w-full p-2 border rounded bg-white"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <button 
+                                                    onClick={() => showToast("All Website Text Sections Saved Successfully!")}
+                                                    className="bg-botanical-900 text-gold-400 font-bold px-6 py-2.5 rounded-lg text-xs hover:bg-botanical-800 transition shadow"
+                                                >
+                                                    <i className="fa-solid fa-floppy-disk mr-1.5"></i> Save All Text Changes
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* 2. PRODUCT CATALOG MANAGEMENT */}
+                                        {adminActiveSection === 'products' && (
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between items-center">
+                                                    <h4 className="font-serif font-bold text-sm text-gray-800">Saree Products List</h4>
+                                                    <button 
+                                                        onClick={() => setEditingProduct({
+                                                            id: `prod_${Date.now()}`,
+                                                            sku: `KATH-NEW-${Math.floor(Math.random()*1000)}`,
+                                                            name: "",
+                                                            category: categories[0] || "Bengali Traditional Sarees",
+                                                            price: 5000,
+                                                            salePrice: null,
+                                                            fabric: "Pure Bengal Handloom Cotton",
+                                                            length: "5.5 Meters",
+                                                            craft: "Handloom Weave",
+                                                            stock: 10,
+                                                            isFeatured: false,
+                                                            isNewArrival: true,
+                                                            isBestseller: false,
+                                                            description: "Authentic handwoven saree...",
+                                                            images: [FALLBACK_IMAGE]
+                                                        })}
+                                                        className="bg-botanical-900 text-gold-400 text-xs font-bold px-3 py-2 rounded-lg hover:bg-botanical-800 transition"
+                                                    >
+                                                        + Add New Saree
+                                                    </button>
+                                                </div>
+
+                                                <div className="overflow-x-auto">
+                                                    <table className="w-full text-left text-xs border border-ivory-200 rounded-lg">
+                                                        <thead className="bg-ivory-100 font-serif font-bold text-botanical-900">
+                                                            <tr>
+                                                                <th className="p-2.5">Saree Name</th>
+                                                                <th className="p-2.5">SKU</th>
+                                                                <th className="p-2.5">Category</th>
+                                                                <th className="p-2.5">Price</th>
+                                                                <th className="p-2.5">Stock</th>
+                                                                <th className="p-2.5 text-right">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-ivory-100">
+                                                            {products.map(p => (
+                                                                <tr key={p.id} className="hover:bg-ivory-50">
+                                                                    <td className="p-2.5 font-bold">{p.name}</td>
+                                                                    <td className="p-2.5">{p.sku}</td>
+                                                                    <td className="p-2.5">{p.category}</td>
+                                                                    <td className="p-2.5">₹{p.price}</td>
+                                                                    <td className="p-2.5">{p.stock}</td>
+                                                                    <td className="p-2.5 text-right space-x-2">
+                                                                        <button 
+                                                                            onClick={() => setEditingProduct(p)}
+                                                                            className="text-botanical-900 font-bold hover:underline"
+                                                                        >
+                                                                            Edit
+                                                                        </button>
+                                                                        <button 
+                                                                            onClick={() => {
+                                                                                setProducts(products.filter(item => item.id !== p.id));
+                                                                                showToast("Saree deleted");
+                                                                            }}
+                                                                            className="text-red-600 font-bold hover:underline"
+                                                                        >
+                                                                            Delete
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                {/* Edit Saree Form Modal inside Admin */}
+                                                {editingProduct && (
+                                                    <div className="bg-ivory-100 p-5 rounded-xl border border-gold-500/40 space-y-4 mt-4">
+                                                        <h5 className="font-serif font-bold text-sm text-botanical-900">
+                                                            {editingProduct.id ? 'Edit Saree Product' : 'Add New Saree'}
+                                                        </h5>
+                                                        
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                                            <div>
+                                                                <label className="block font-bold mb-1">Saree Name</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    value={editingProduct.name}
+                                                                    onChange={e => setEditingProduct({...editingProduct, name: e.target.value})}
+                                                                    className="w-full p-2 border rounded"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block font-bold mb-1">SKU / Product Code</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    value={editingProduct.sku}
+                                                                    onChange={e => setEditingProduct({...editingProduct, sku: e.target.value})}
+                                                                    className="w-full p-2 border rounded"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block font-bold mb-1">Category</label>
+                                                                <select 
+                                                                    value={editingProduct.category}
+                                                                    onChange={e => setEditingProduct({...editingProduct, category: e.target.value})}
+                                                                    className="w-full p-2 border rounded"
+                                                                >
+                                                                    {categories.map((c, i) => (
+                                                                        <option key={i} value={c}>{c}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block font-bold mb-1">Price (₹)</label>
+                                                                <input 
+                                                                    type="number" 
+                                                                    value={editingProduct.price}
+                                                                    onChange={e => setEditingProduct({...editingProduct, price: Number(e.target.value)})}
+                                                                    className="w-full p-2 border rounded"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Photo Upload Options */}
+                                                        <div className="space-y-3 text-xs">
+                                                            <label className="block font-bold text-gray-800">Saree Photos (Upload from Device or Paste Image URL)</label>
+                                                            
+                                                            <div className="flex flex-col sm:flex-row gap-3 items-center">
+                                                                <label className="cursor-pointer bg-botanical-900 hover:bg-botanical-800 text-gold-400 font-bold px-4 py-2 rounded-lg text-xs flex items-center gap-2 transition">
+                                                                    <i className="fa-solid fa-cloud-arrow-up text-sm"></i>
+                                                                    <span>Choose Image File</span>
+                                                                    <input 
+                                                                        type="file" 
+                                                                        accept="image/*" 
+                                                                        multiple 
+                                                                        onChange={handleProductImageUpload} 
+                                                                        className="hidden" 
+                                                                    />
+                                                                </label>
+                                                                <span className="text-gray-400 text-[11px]">OR</span>
+                                                                <input 
+                                                                    type="text" 
+                                                                    placeholder="Paste image URL (https://...)" 
+                                                                    value={editingProduct.images[0] || ''}
+                                                                    onChange={e => setEditingProduct({...editingProduct, images: [e.target.value]})}
+                                                                    className="flex-grow p-2 border rounded text-xs"
+                                                                />
+                                                            </div>
+
+                                                            {editingProduct.images && editingProduct.images.length > 0 && (
+                                                                <div className="flex gap-2 pt-2 overflow-x-auto">
+                                                                    {editingProduct.images.map((imgUrl, imgIdx) => (
+                                                                        <div key={imgIdx} className="relative group w-16 h-16 border border-gold-500 rounded-lg overflow-hidden flex-shrink-0">
+                                                                            <img src={imgUrl || FALLBACK_IMAGE} alt="Preview" className="w-full h-full object-cover" onError={(e) => { e.target.src = FALLBACK_IMAGE; }} />
+                                                                            <button 
+                                                                                type="button"
+                                                                                onClick={() => {
+                                                                                    const updated = editingProduct.images.filter((_, i) => i !== imgIdx);
+                                                                                    setEditingProduct({ ...editingProduct, images: updated.length ? updated : [FALLBACK_IMAGE] });
+                                                                                }}
+                                                                                className="absolute top-0 right-0 bg-red-600 text-white text-[10px] w-4 h-4 rounded-bl flex items-center justify-center opacity-80 hover:opacity-100"
+                                                                            >
+                                                                                ✕
+                                                                            </button>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="flex justify-end gap-2 pt-2">
+                                                            <button 
+                                                                onClick={() => setEditingProduct(null)}
+                                                                className="px-3 py-1.5 bg-gray-200 text-xs font-bold rounded"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button 
+                                                                onClick={() => {
+                                                                    setProducts(prev => {
+                                                                        const exists = prev.some(p => p.id === editingProduct.id);
+                                                                        if (exists) {
+                                                                            return prev.map(p => p.id === editingProduct.id ? editingProduct : p);
+                                                                        } else {
+                                                                            return [...prev, editingProduct];
+                                                                        }
+                                                                    });
+                                                                    setEditingProduct(null);
+                                                                    showToast("Saree product saved successfully!");
+                                                                }}
+                                                                className="px-4 py-1.5 bg-botanical-900 text-gold-400 font-bold text-xs rounded"
+                                                            >
+                                                                Save Saree
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* 3. CATEGORY MANAGEMENT */}
+                                        {adminActiveSection === 'categories' && (
+                                            <div className="space-y-4">
+                                                <h4 className="font-serif font-bold text-sm text-gray-800">Manage Categories</h4>
+                                                <div className="flex gap-2">
+                                                    <input 
+                                                        type="text" 
+                                                        id="newCatInput"
+                                                        placeholder="New Category Name..."
+                                                        className="px-3 py-2 border rounded-lg text-xs flex-grow"
+                                                    />
+                                                    <button 
+                                                        onClick={() => {
+                                                            const val = document.getElementById('newCatInput').value.trim();
+                                                            if (val && !categories.includes(val)) {
+                                                                setCategories([...categories, val]);
+                                                                document.getElementById('newCatInput').value = '';
+                                                                showToast("Category added!");
+                                                            }
+                                                        }}
+                                                        className="bg-botanical-900 text-white text-xs font-bold px-4 py-2 rounded-lg"
+                                                    >
+                                                        Add Category
+                                                    </button>
+                                                </div>
+
+                                                <ul className="divide-y divide-ivory-100 border rounded-lg text-xs">
+                                                    {categories.map((cat, idx) => (
+                                                        <li key={idx} className="p-3 flex justify-between items-center">
+                                                            <span>{cat}</span>
+                                                            <button 
+                                                                onClick={() => setCategories(categories.filter(c => c !== cat))}
+                                                                className="text-red-600 font-bold hover:underline"
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        {/* 4. BRAND LOGO & CREDENTIALS */}
+                                        {adminActiveSection === 'settings' && (
+                                            <div className="space-y-5 text-xs">
+                                                <h4 className="font-serif font-bold text-sm text-gray-800">Brand Logo & Admin Passwords</h4>
+                                                
+                                                {/* Logo Upload */}
+                                                <div className="bg-ivory-100 p-4 rounded-xl border border-ivory-300 space-y-3">
+                                                    <label className="block font-bold text-botanical-900 uppercase tracking-wider">
+                                                        Header Brand Logo Image
+                                                    </label>
+
+                                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                                                        <div className="md:col-span-4 bg-white p-3 rounded-lg border border-ivory-200 text-center flex flex-col items-center justify-center min-h-[90px]">
+                                                            <span className="text-[10px] text-gray-400 mb-1.5 block">Live Header Preview</span>
+                                                            {settings.logoUrl && !logoError ? (
+                                                                <img 
+                                                                    src={settings.logoUrl} 
+                                                                    alt="Logo Preview" 
+                                                                    className="h-12 w-auto object-contain max-w-full"
+                                                                    onError={() => setLogoError(true)}
+                                                                />
+                                                            ) : (
+                                                                <div className="flex items-center gap-2 text-botanical-900 font-serif font-bold text-base">
+                                                                    <div className="w-8 h-8 rounded-full bg-botanical-900 text-gold-400 flex items-center justify-center border border-gold-500">
+                                                                        <i className="fa-solid fa-flower text-xs"></i>
+                                                                    </div>
+                                                                    <span>Kathgolap (Default)</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="md:col-span-8 space-y-2.5">
+                                                            <div>
+                                                                <label className="block text-[11px] text-gray-600 font-semibold mb-1">Option 1: Upload Logo File from Device (PNG, JPG, SVG)</label>
+                                                                <label className="cursor-pointer inline-flex items-center gap-2 bg-botanical-900 hover:bg-botanical-800 text-gold-400 font-bold px-4 py-2 rounded-lg text-xs transition shadow-sm">
+                                                                    <i className="fa-solid fa-file-arrow-up text-sm"></i>
+                                                                    <span>Choose Logo File</span>
+                                                                    <input 
+                                                                        type="file" 
+                                                                        accept="image/*" 
+                                                                        onChange={handleLogoFileUpload} 
+                                                                        className="hidden" 
+                                                                    />
+                                                                </label>
+                                                            </div>
+
+                                                            <div>
+                                                                <label className="block text-[11px] text-gray-600 font-semibold mb-1">Option 2: Paste Direct Logo URL</label>
+                                                                <div className="flex gap-2">
+                                                                    <input 
+                                                                        type="text" 
+                                                                        value={settings.logoUrl}
+                                                                        onChange={e => {
+                                                                            setSettings({...settings, logoUrl: e.target.value});
+                                                                            setLogoError(false);
+                                                                        }}
+                                                                        placeholder="https://example.com/logo.png"
+                                                                        className="w-full p-2 border rounded text-xs bg-white"
+                                                                    />
+                                                                    {settings.logoUrl && (
+                                                                        <button 
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setSettings({ ...settings, logoUrl: '' });
+                                                                                setLogoError(false);
+                                                                                showToast("Restored default emblem mark");
+                                                                            }}
+                                                                            className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold rounded flex-shrink-0"
+                                                                        >
+                                                                            Reset
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Security & Access */}
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block font-bold mb-1">Admin User ID</label>
+                                                        <input 
+                                                            type="text" 
+                                                            value={settings.adminUserId}
+                                                            onChange={e => setSettings({...settings, adminUserId: e.target.value})}
+                                                            className="w-full p-2 border rounded"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block font-bold mb-1">Admin Password</label>
+                                                        <input 
+                                                            type="text" 
+                                                            value={settings.adminPassword}
+                                                            onChange={e => setSettings({...settings, adminPassword: e.target.value})}
+                                                            className="w-full p-2 border rounded"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <button 
+                                                    onClick={() => showToast("Admin Credentials Updated!")}
+                                                    className="bg-botanical-900 text-gold-400 font-bold px-4 py-2 rounded-lg"
+                                                >
+                                                    Save Security Settings
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* 5. INQUIRIES LOG */}
+                                        {adminActiveSection === 'inquiries' && (
+                                            <div className="space-y-4">
+                                                <h4 className="font-serif font-bold text-sm text-gray-800">WhatsApp Orders Log</h4>
+                                                <div className="overflow-x-auto">
+                                                    <table className="w-full text-left text-xs border border-ivory-200 rounded-lg">
+                                                        <thead className="bg-ivory-100 font-serif font-bold text-botanical-900">
+                                                            <tr>
+                                                                <th className="p-2.5">Date</th>
+                                                                <th className="p-2.5">Customer Name</th>
+                                                                <th className="p-2.5">Phone</th>
+                                                                <th className="p-2.5">Items</th>
+                                                                <th className="p-2.5">Amount</th>
+                                                                <th className="p-2.5">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-ivory-100">
+                                                            {inquiries.map((inq) => (
+                                                                <tr key={inq.id}>
+                                                                    <td className="p-2.5">{inq.date}</td>
+                                                                    <td className="p-2.5 font-bold">{inq.customerName}</td>
+                                                                    <td className="p-2.5">{inq.phone}</td>
+                                                                    <td className="p-2.5">{inq.items}</td>
+                                                                    <td className="p-2.5 font-bold">₹{inq.amount}</td>
+                                                                    <td className="p-2.5">
+                                                                        <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                                                                            {inq.status}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {}
+                    {/* FOOTER */}
+                    <footer className="bg-botanical-950 text-ivory-100 border-t border-gold-600/30 pt-12 pb-8">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                            
+                            <div className="space-y-3">
+                                <h4 className="font-serif text-2xl font-bold text-ivory-50">{settings.storeTitle}</h4>
+                                <p className="font-cormorant text-xs text-ivory-200 leading-relaxed">
+                                    {settings.footerBio}
+                                </p>
+                                <div className="text-xs text-gold-400 space-x-3 pt-2">
+                                    <a href={`https://instagram.com/${settings.instagramHandle}`} target="_blank" rel="noreferrer"><i className="fa-brands fa-instagram text-base"></i></a>
+                                    <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer"><i className="fa-brands fa-whatsapp text-base"></i></a>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h5 className="font-serif font-bold text-sm text-gold-400 uppercase tracking-wider mb-3">Collections</h5>
+                                <ul className="space-y-2 text-xs text-ivory-200">
+                                    {categories.slice(0, 5).map((cat, i) => (
+                                        <li key={i}>
+                                            <button onClick={() => { setSelectedCategory(cat); setActiveTab('shop'); }} className="hover:text-gold-300 transition">
+                                                {cat}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h5 className="font-serif font-bold text-sm text-gold-400 uppercase tracking-wider mb-3">Boutique Service</h5>
+                                <ul className="space-y-2 text-xs text-ivory-200">
+                                    <li><button onClick={() => setActiveTab('about')} className="hover:text-gold-300">About Our Heritage</button></li>
+                                    <li><button onClick={() => setActiveTab('contact')} className="hover:text-gold-300">Contact & Support</button></li>
+                                    <li><button onClick={() => showToast(settings.shippingNotice)} className="hover:text-gold-300">Shipping Policy</button></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h5 className="font-serif font-bold text-sm text-gold-400 uppercase tracking-wider mb-3">WhatsApp Order Line</h5>
+                                <p className="text-xs text-ivory-200 mb-2">Need direct assistance or draping guidance?</p>
+                                <a 
+                                    href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition"
+                                >
+                                    <i className="fa-brands fa-whatsapp text-sm"></i>
+                                    <span>{settings.whatsappNumber}</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div className="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-botanical-900 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400">
+                            <p>© {new Date().getFullYear()} {settings.storeTitle} Boutique. All Rights Reserved. Grace in Every Thread.</p>
+                            <button onClick={() => setIsAdminOpen(true)} className="hover:text-gold-400 mt-2 sm:mt-0 transition">
+                                🔑 Admin Management Portal
+                            </button>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render Application
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
